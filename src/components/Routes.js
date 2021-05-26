@@ -6,8 +6,8 @@ const Routing = () => {
   return (
     <Switch>
       <Route exact path="/" children={<Home />} />
-      <Route path="/:category?/:sort?" children={<Home />} />
-      <Route path="/product/:ident" children={<ProductP />} />
+      <Route path="/home/:category?/:sort?" children={<Home />} />
+      <Route exact path="/product/:ident" children={<ProductP />} />
     </Switch>
   );
 };

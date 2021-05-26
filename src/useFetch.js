@@ -4,6 +4,7 @@ function useFetch([category, sort]) {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
+
   const [apiEndPoint, setApiEndPoint] = useState(
     `https://fakestoreapi.com/products${sort ? '?sort=' + sort : ''}`
   );
@@ -14,14 +15,21 @@ function useFetch([category, sort]) {
   }, [sort]);
 
   // filter
-  // useEffect(() => {
-  //   if (category === ('ele' || 'jew' || 'men' || 'wom')) {
-  //     setProducts(users.filter((e) => e.category.slice(0, 3) === category));
-  //     console.log(products);
-  //   } else if (category === 'all') {
-  //     setProducts(users);
-  //   }
-  // }, [category]);
+  useEffect(() => {
+    if (
+      category === 'ele' ||
+      category === 'jew' ||
+      category === 'men' ||
+      category === 'wom'
+    ) {
+      let newUsers = users.filter((e) => e.category.slice(0, 3) === category);
+      setProducts(newUsers);
+      console.log(category, newUsers, 'if ');
+    } else {
+      setProducts(users);
+      console.log(category, 'else');
+    }
+  }, [category, users]);
 
   // calling api
   const callApi = async () => {
@@ -29,16 +37,14 @@ function useFetch([category, sort]) {
     let responce = await fetch(apiEndPoint);
     let jsoned = await responce.json();
     setLoading(false);
-    // setUsers(jsoned);
-    setProducts(jsoned);
-
+    setUsers(jsoned);
     console.log('api call after apiendpoint change');
   };
   useEffect(() => {
     callApi();
   }, [apiEndPoint]);
 
-  return [products, isLoading, setApiEndPoint];
+  return [products, isLoading];
 }
 
 export default useFetch;
